@@ -48,7 +48,7 @@
     "supertest": "^4.0.2"
   },
   "engines": {
-    "node": "12.x.x"
+    "node": "19"
   },
   "jest": {
     "globalSetup": "./tests/global-setup.js",
