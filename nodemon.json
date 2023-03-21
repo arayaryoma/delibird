@@ -1,0 +1,6 @@
+{
+  "watch": ["src"],
+  "ext": "ts,mts,cts",
+  "exec": "node -r @swc-node/register ./index.js"
+}
+
