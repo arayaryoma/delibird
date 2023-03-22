@@ -3,8 +3,8 @@
     "private": true,
     "description": "Receives payloads then sends them to your locally running application.",
     "author": "Jason Etcovitch <jasonetco@gmail.com> (https://github.com/JasonEtco)",
-    "license": "ISC",
     "repository": "github:probot/smee.io",
+    "license": "MIT",
     "scripts": {
         "start": "node -r @swc-node/register ./index.mjs",
         "dev": "nodemon",
