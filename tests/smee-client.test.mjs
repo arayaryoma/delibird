@@ -2,93 +2,98 @@
  * @jest-environment node
  */
 
-import createServer from '../lib/server'
-import Client from 'smee-client'
-import request from 'supertest'
-import nock, { enableNetConnect } from 'nock'
+import createServer from "../lib/server";
+import Client from "smee-client";
+import request from "supertest";
+import nock, { enableNetConnect } from "nock";
 
 // Only allow requests to the proxy server listening on localhost
-enableNetConnect('127.0.0.1')
+enableNetConnect("127.0.0.1");
 
 const logger = {
-  info: jest.fn(),
-  error: jest.fn()
-}
+    info: jest.fn(),
+    error: jest.fn(),
+};
 
-describe('client', () => {
-  let proxy, host, client, channel
+describe("client", () => {
+    let proxy, host, client, channel;
 
-  const targetUrl = 'http://example.com/foo/bar'
+    const targetUrl = "http://example.com/foo/bar";
 
-  beforeEach((done) => {
-    proxy = createServer().listen(0, () => {
-      host = `http://127.0.0.1:${proxy.address().port}`
-      done()
-    })
-  })
-
-  afterEach(() => {
-    proxy && proxy.close()
-    client && client.close()
-  })
-
-  describe('connecting to a channel', () => {
     beforeEach((done) => {
-      channel = '/fake-channel'
-      client = new Client({
-        source: `${host}${channel}`,
-        target: targetUrl,
-        logger
-      }).start()
-      // Wait for event source to be ready
-      client.addEventListener('ready', () => done())
-    })
+        proxy = createServer().listen(0, () => {
+            host = `http://127.0.0.1:${proxy.address().port}`;
+            done();
+        });
+    });
 
-    test('throws an error if the source is invalid', async () => {
-      try {
-        client = new Client({
-          source: 'not-a-real-url',
-          target: targetUrl,
-          logger
-        }).start()
-      } catch (e) {
-        expect(e.message).toMatchSnapshot()
-      }
-    })
+    afterEach(() => {
+        proxy && proxy.close();
+        client && client.close();
+    });
 
-    test('POST /:channel forwards to target url', async (done) => {
-      const payload = { payload: true }
+    describe("connecting to a channel", () => {
+        beforeEach((done) => {
+            channel = "/fake-channel";
+            client = new Client({
+                source: `${host}${channel}`,
+                target: targetUrl,
+                logger,
+            }).start();
+            // Wait for event source to be ready
+            client.addEventListener("ready", () => done());
+        });
 
-      // Expect request to target
-      const forward = nock('http://example.com').post('/foo/bar', payload).reply(200)
+        test("throws an error if the source is invalid", async () => {
+            try {
+                client = new Client({
+                    source: "not-a-real-url",
+                    target: targetUrl,
+                    logger,
+                }).start();
+            } catch (e) {
+                expect(e.message).toMatchSnapshot();
+            }
+        });
 
-      // Test is done when this is called
-      client.addEventListener('message', (msg) => {
-        expect(forward.isDone()).toBe(true)
-        done()
-      })
+        test("POST /:channel forwards to target url", async (done) => {
+            const payload = { payload: true };
 
-      // Send request to proxy server
-      await request(proxy).post(channel).send(payload).expect(200)
-    })
+            // Expect request to target
+            const forward = nock("http://example.com")
+                .post("/foo/bar", payload)
+                .reply(200);
 
-    test('POST /:channel forwards query string to target url', async (done) => {
-      const queryParams = {
-        param1: 'testData1',
-        param2: 'testData2'
-      }
+            // Test is done when this is called
+            client.addEventListener("message", (msg) => {
+                expect(forward.isDone()).toBe(true);
+                done();
+            });
 
-      // Expect request to target
-      const forward = nock('http://example.com').post('/foo/bar').query(queryParams).reply(200)
+            // Send request to proxy server
+            await request(proxy).post(channel).send(payload).expect(200);
+        });
 
-      // Test is done when this is called
-      client.addEventListener('message', (msg) => {
-        expect(forward.isDone()).toBe(true)
-        done()
-      })
+        test("POST /:channel forwards query string to target url", async (done) => {
+            const queryParams = {
+                param1: "testData1",
+                param2: "testData2",
+            };
 
-      // Send request to proxy server with query string
-      await request(proxy).post(channel).query(queryParams).send()
-    })
-  })
-})
+            // Expect request to target
+            const forward = nock("http://example.com")
+                .post("/foo/bar")
+                .query(queryParams)
+                .reply(200);
+
+            // Test is done when this is called
+            client.addEventListener("message", (msg) => {
+                expect(forward.isDone()).toBe(true);
+                done();
+            });
+
+            // Send request to proxy server with query string
+            await request(proxy).post(channel).query(queryParams).send();
+        });
+    });
+});
