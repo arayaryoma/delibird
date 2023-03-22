@@ -22,6 +22,7 @@ specifiers:
   express: ^4.17.1
   express-sslify: ^1.2.0
   glob-all: ^3.2.1
+  helmet: ^6.0.1
   ioredis: ^4.16.3
   jest: ^25.5.4
   nock: ^12.0.3
@@ -38,6 +39,7 @@ dependencies:
   eventsource: 1.1.2
   express: 4.18.2
   express-sslify: 1.2.0
+  helmet: 6.0.1
   ioredis: 4.28.5
   raven: 2.6.4
 
@@ -2951,6 +2953,11 @@ packages:
     engines: {node: '>= 0.4.0'}
     dependencies:
       function-bind: 1.1.1
+
+  /helmet/6.0.1:
+    resolution: {integrity: sha512-8wo+VdQhTMVBMCITYZaGTbE4lvlthelPYSvoyNvk4RECTmrVjMerp9RfUOQXZWLvCcAn1pKj7ZRxK4lI9Alrcw==}
+    engines: {node: '>=14.0.0'}
+    dev: false
 
   /hexoid/1.0.0:
     resolution: {integrity: sha512-QFLV0taWQOZtvIRIAdBChesmogZrtuXvVWsFHZTk2SU+anspqZ2vMnoLg7IE1+Uk16N19APic1BuF8bC8c2m5g==}
