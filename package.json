@@ -1,10 +1,9 @@
 {
-    "name": "smee.io",
+    "name": "delibird",
     "private": true,
     "description": "Receives payloads then sends them to your locally running application.",
-    "author": "Jason Etcovitch <jasonetco@gmail.com> (https://github.com/JasonEtco)",
-    "repository": "github:probot/smee.io",
     "license": "MIT",
+    "repository": "github:arayaryoma/delibird",
     "scripts": {
         "start": "node -r @swc-node/register ./index.mjs",
         "dev": "nodemon",
