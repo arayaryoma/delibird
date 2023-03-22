@@ -2,18 +2,18 @@
  * @jest-environment node
  */
 
-const createServer = require('../lib/server')
-const request = require('supertest')
-const EventSource = require('eventsource')
-const Raven = require('raven')
+import createServer from '../lib/server'
+import request from 'supertest'
+import EventSource from 'eventsource'
+import { captureException } from 'raven'
 
 describe('Sentry tests', () => {
   let app, server
 
   beforeEach(() => {
     app = createServer()
-    server = app.listen(0, () => {})
-    Raven.captureException = jest.fn()
+    server = app.listen(0, () => { })
+    captureException = jest.fn()
   })
 
   it('Starts if SENTRY_DSN is not set', () => {
@@ -27,7 +27,7 @@ describe('Sentry tests', () => {
     app = createServer(a => a.get('/not/a/valid/url', () => { throw new Error('test') }))
 
     await request(app).get('/not/a/valid/url')
-    expect(Raven.captureException).toHaveBeenCalled()
+    expect(captureException).toHaveBeenCalled()
   })
 
   it('with an invalid SETRY_DSN', () => {

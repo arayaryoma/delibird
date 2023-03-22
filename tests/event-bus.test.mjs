@@ -1,4 +1,4 @@
-const EventBus = require('../lib/event-bus')
+import EventBus from '../lib/event-bus'
 
 describe('EventBus', () => {
   describe('#emitEvent', () => {

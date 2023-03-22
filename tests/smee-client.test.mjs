@@ -2,13 +2,13 @@
  * @jest-environment node
  */
 
-const createServer = require('../lib/server')
-const Client = require('smee-client')
-const request = require('supertest')
-const nock = require('nock')
+import createServer from '../lib/server'
+import Client from 'smee-client'
+import request from 'supertest'
+import nock, { enableNetConnect } from 'nock'
 
 // Only allow requests to the proxy server listening on localhost
-nock.enableNetConnect('127.0.0.1')
+enableNetConnect('127.0.0.1')
 
 const logger = {
   info: jest.fn(),
