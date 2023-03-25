@@ -43,7 +43,7 @@
         "typescript": "^5.0.2"
     },
     "engines": {
-        "node": "19"
+        "node": "18"
     },
     "standard": {
         "env": [

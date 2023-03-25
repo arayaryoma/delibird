@@ -1,4 +1,4 @@
-FROM node:19.8.1-bullseye-slim
+FROM node:18.15.0-bullseye-slim
 
 ENV PROJECT_ROOT /app
 
